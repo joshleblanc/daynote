@@ -63,5 +63,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_04_000629) do
 
   # Virtual tables defined in this database.
   # Note that virtual tables may not work with other database engines. Be careful if changing database.
-  create_virtual_table "entry_embeddings", "vec0", ["embedding float[1536]"]
+  create_virtual_table "entry_embeddings", "vec0", ["id integer PRIMARY KEY AUTOINCREMENT NOT NULL", "entry_id integer FORIENG KEY NOT NULL", "embedding float[1536] distance_metric=L2"]
 end

@@ -3,7 +3,12 @@ class EntriesController < ApplicationController
 
   # GET /entries or /entries.json
   def index
-    @entries = Entry.all
+    if params.include? :q
+    else
+      date = Time.now
+      entry = Entry.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create
+      redirect_to entry
+    end
   end
 
   # GET /entries/1 or /entries/1.json
@@ -58,13 +63,14 @@ class EntriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_entry
-      @entry = Entry.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def entry_params
-      params.require(:entry).permit(:content)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_entry
+    @entry = Entry.find(params.expect(:id))
+  end
+
+  # Only allow a list of trusted parameters through.
+  def entry_params
+    params.require(:entry).permit(:content)
+  end
 end
