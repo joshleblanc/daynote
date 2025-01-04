@@ -3,7 +3,13 @@ class Entry < ApplicationRecord
 
   has_one :entry_embedding
 
+  belongs_to :user
+
   # after_save :embed!
+
+  def editable?(current_user)
+    current? || current_user&.admin?
+  end
 
   def current?
     today = Time.now
@@ -11,13 +17,11 @@ class Entry < ApplicationRecord
   end
 
   def next_entry
-    date = created_at + 1.day
-    Entry.where(created_at: date.beginning_of_day..date.end_of_day).first
+    Entry.where(created_at: created_at..).order(:created_at).second
   end
 
   def prev_entry
-    date = created_at - 1.day
-    Entry.where(created_at: date.beginning_of_day..date.end_of_day).last
+    Entry.where(created_at: ..created_at).order(:created_at).second_to_last
   end
 
   def prev_entry?

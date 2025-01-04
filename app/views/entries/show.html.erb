@@ -1,16 +1,20 @@
-<p style="color: green"><%= notice %></p>
-<% if @entry.current? %>
+<div data-controller="auto-submit">
   <div class="flex justify-around w-full pb-16">
     <%= link_to "Previous entry", @entry.prev_entry, disabled: !@entry.prev_entry?, class: class_names("opacity-50 cursor-not-allowed" => !@entry.prev_entry?) %>
-    <h1><%= Date.today.to_formatted_s(:long) %></h1>
+    <h1 class="flex">
+      <%= @entry.created_at %>
+      <% if @entry.editable?(current_user) %>
+        <div class="pl-2 w-7">
+          <%= icon "check-circle", class: "text-green-500", stroke_width: 3, data: { auto_submit_target: "synced" } %>
+          <%= icon "faded-spinner", class: "hidden", data: { auto_submit_target: "syncing" }, library: "animated" %>
+        </div>
+      <% end %>
+    </h1>
     <%= link_to "Next entry", @entry.next_entry, disabled: !@entry.next_entry?, class: class_names("opacity-50 cursor-not-allowed" => !@entry.next_entry?) %>
   </div>
-  <%= render "form", entry: @entry %>
-<% else %>
-  <%= render @entry %>
-<% end %>
-<div>
-  <%= link_to "Edit this entry", edit_entry_path(@entry) %> |
-  <%= link_to "Back to entries", entries_path %>
-  <%= button_to "Destroy this entry", @entry, method: :delete %>
+  <% if @entry.editable?(current_user) %>
+    <%= render "form", entry: @entry %>
+  <% else %>
+    <%= render @entry %>
+  <% end %>
 </div>

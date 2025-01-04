@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_04_000629) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_04_132229) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -52,16 +52,39 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_04_000629) do
   create_table "entries", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_entries_on_user_id"
   end
 
 # Could not dump table "entry_embeddings_vector_chunks00" because of following StandardError
 #   Unknown type '' for column 'rowid'
 
 
+  create_table "sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "timezone", default: "UTC"
+    t.boolean "admin", default: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "entries", "users"
+  add_foreign_key "sessions", "users"
 
   # Virtual tables defined in this database.
   # Note that virtual tables may not work with other database engines. Be careful if changing database.
-  create_virtual_table "entry_embeddings", "vec0", ["id integer PRIMARY KEY AUTOINCREMENT NOT NULL", "entry_id integer FORIENG KEY NOT NULL", "embedding float[1536] distance_metric=L2"]
+  create_virtual_table "entry_embeddings", "vec0", ["id integer PRIMARY KEY AUTOINCREMENT NOT NULL", "entry_id integer FORIENG KEY NOT NULL", "embedding float[384] distance_metric=L2"]
 end

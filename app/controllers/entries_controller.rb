@@ -6,7 +6,7 @@ class EntriesController < ApplicationController
     if params.include? :q
     else
       date = Time.now
-      entry = Entry.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create
+      entry = policy_scope(Entry.where(created_at: date.beginning_of_day..date.end_of_day)).first_or_create
       redirect_to entry
     end
   end

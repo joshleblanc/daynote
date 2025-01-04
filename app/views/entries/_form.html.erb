@@ -1,4 +1,4 @@
-<%= form_with(model: entry, class: "w-full") do |form| %>
+<%= form_with(model: entry, class: "w-full", data: { auto_submit_target: "form" }) do |form| %>
   <% if entry.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(entry.errors.count, "error") %> prohibited this entry from being saved:</h2>
@@ -9,10 +9,7 @@
       </ul>
     </div>
   <% end %>
-  <div class="field">
-    <%= form.rich_textarea :content %>
-  </div>
-  <div>
-    <%= form.submit %>
+  <div class="field w-full" data-turbo-permanent id="<%= dom_id(entry, "trix-editor") %>">
+    <%= form.rich_textarea :content, data: { controller: "trix-state", action: "trix-selection-change->trix-state#selectionChange trix-change->auto-submit#change trix-initialize->auto-submit#init", auto_submit_target: "trix" } %>
   </div>
 <% end %>
