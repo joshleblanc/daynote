@@ -1,0 +1,9 @@
+<% content_for :title, "New entry" %>
+<div class="flex justify-center w-full">
+  <h1><%= Date.today.to_formatted_s(:long) %></h1>
+</div>
+<%= render "form", entry: @entry %>
+<br>
+<div>
+  <%= link_to "Back to entries", entries_path %>
+</div>
