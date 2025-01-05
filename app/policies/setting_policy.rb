@@ -17,15 +17,15 @@ class SettingPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.admin?
+    user&.admin
   end
 
   def edit?
-    user&.admin?
+    user&.admin
   end
 
   def update?
-    user&.admin?
+    user&.admin
   end
 
   def destroy?

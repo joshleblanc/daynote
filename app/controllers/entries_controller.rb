@@ -5,10 +5,10 @@ class EntriesController < ApplicationController
   def index
     if params.include? :q
       embedding = Embedding.create(params[:q])
-      @entries = policy_scope(Entry.vector_search(embedding: embedding.embedding)).order(created_at: :desc)
+      @entries = policy_scope(Entry).vector_search(embedding: embedding.embedding).order(created_at: :desc)
     else
       date = Time.now
-      entry = policy_scope(Entry.where(created_at: date.beginning_of_day..date.end_of_day)).first_or_create
+      entry = policy_scope(Entry).where(created_at: date.beginning_of_day..date.end_of_day).first_or_create
       redirect_to entry
     end
   end
@@ -17,28 +17,8 @@ class EntriesController < ApplicationController
   def show
   end
 
-  # GET /entries/new
-  def new
-    @entry = Entry.new
-  end
-
   # GET /entries/1/edit
   def edit
-  end
-
-  # POST /entries or /entries.json
-  def create
-    @entry = Entry.new(entry_params)
-
-    respond_to do |format|
-      if @entry.save
-        format.html { redirect_to @entry, notice: "Entry was successfully created." }
-        format.json { render :show, status: :created, location: @entry }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @entry.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /entries/1 or /entries/1.json
@@ -69,7 +49,7 @@ class EntriesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_entry
-    @entry = Entry.find(params.expect(:id))
+    @entry = policy_scope(Entry).find(params.expect(:id))
   end
 
   # Only allow a list of trusted parameters through.

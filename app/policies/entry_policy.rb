@@ -11,6 +11,7 @@ class EntryPolicy < ApplicationPolicy
     #   scope.all
     # end
     def resolve
+      p "running entry scope"
       scope.where(user: user)
     end
   end
