@@ -1,37 +1,12 @@
 class SettingsController < ApplicationController
-  before_action :set_setting, only: %i[ show edit update destroy ]
-
-  # GET /settings or /settings.json
-  def index
-    @settings = Setting.all
-  end
+  before_action :set_setting, only: %i[ show edit update ]
 
   # GET /settings/1 or /settings/1.json
   def show
   end
 
-  # GET /settings/new
-  def new
-    @setting = Setting.new
-  end
-
   # GET /settings/1/edit
   def edit
-  end
-
-  # POST /settings or /settings.json
-  def create
-    @setting = Setting.new(setting_params)
-
-    respond_to do |format|
-      if @setting.save
-        format.html { redirect_to @setting, notice: "Setting was successfully created." }
-        format.json { render :show, status: :created, location: @setting }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @setting.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /settings/1 or /settings/1.json
@@ -47,24 +22,16 @@ class SettingsController < ApplicationController
     end
   end
 
-  # DELETE /settings/1 or /settings/1.json
-  def destroy
-    @setting.destroy!
+  private
 
-    respond_to do |format|
-      format.html { redirect_to settings_path, status: :see_other, notice: "Setting was successfully destroyed." }
-      format.json { head :no_content }
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_setting
+    @setting = Setting.find(params.expect(:id))
+    authorize @setting
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_setting
-      @setting = Setting.find(params.expect(:id))
-    end
-
-    # Only allow a list of trusted parameters through.
-    def setting_params
-      params.expect(setting: [ :insight_prompt, :image_prompt ])
-    end
+  # Only allow a list of trusted parameters through.
+  def setting_params
+    params.expect(setting: [:insight_prompt, :image_prompt, :reply_prompt, :summary_prompt])
+  end
 end

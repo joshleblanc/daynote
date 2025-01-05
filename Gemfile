@@ -79,3 +79,5 @@ gem "pundit", "~> 2.4"
 gem "rails_icons", "~> 1.0"
 
 gem "informers", "~> 1.2"
+
+gem "damerau-levenshtein", "~> 1.3"

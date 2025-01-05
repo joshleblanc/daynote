@@ -1,7 +1,13 @@
 <div id="<%= dom_id entry %>">
-  <% %>
-  <% entry.content.body&.deconstruct&.each do |part| %>
-    <% find_insights(entry, part) %>
+  <% if entry.reply.present? %>
+    <div class="whitespace-pre-line rounded mb-2 text-sm border-2 p-4 <%= class_names("bg-red-500/50 border-red-500" => entry.reply.red?, "bg-yellow-500/50 border-yellow-500" => entry.reply.yellow?, "bg-green-500/50 border-green-500" => entry.reply.green?) %>">🤖 <span class="opacity-50">AI response</span>
+      &nbsp;
+      <%= entry.reply.reply%>
+    </div>
+  <% end %>
+  <% parts = entry.content.body&.deconstruct %>
+  <% find_insights(entry, parts) %>
+  <% parts&.each do |part| %>
     <%= part.to_s.html_safe %>
   <% end %>
 </div>

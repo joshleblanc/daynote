@@ -1,4 +1,4 @@
-class InsightGenerationJob < ApplicationJob
+class ReplyGenerationJob < ApplicationJob
   retry_on StandardError, wait: 5.seconds, attempts: 3
 
   def perform(entry)
@@ -10,7 +10,7 @@ class InsightGenerationJob < ApplicationJob
                              messages: [
                                {
                                  role: "developer", content: [
-                                   { type: "text", text: Setting.instance.insight_prompt },
+                                   { type: "text", text: Setting.instance.reply_prompt },
                                  ],
                                },
                                {
@@ -24,12 +24,11 @@ class InsightGenerationJob < ApplicationJob
 
     json = JSON.parse(insights)
 
-    entry.insights.destroy_all
-
-    p json
-
-    json["sections"].each do |insight|
-      entry.insights.create(context: insight["content"], insight: insight["insight"], label: insight["type"])
-    end
+    entry.reply.destroy if entry.reply
+    Reply.create(
+      reply: json["reply"],
+      entry: entry,
+      urgency: json["urgency"],
+    )
   end
 end

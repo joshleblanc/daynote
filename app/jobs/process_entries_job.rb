@@ -4,7 +4,11 @@ class ProcessEntriesJob < ApplicationJob
     entries = Entry.where(created_at: day.beginning_of_day..day.end_of_day)
 
     entries.each do |entry|
-      ImageGenerationJob.perform_later(entry)
+      if entry.content.blank?
+        entry.destroy
+      else
+        entry.regenerate!
+      end
     end
   end
 end

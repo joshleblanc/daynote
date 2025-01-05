@@ -1,16 +1,21 @@
 <p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Entries" %>
-
-<h1>Entries</h1>
-
-<div id="entries">
+<div id="entries" class="flex w-full flex-col">
   <% @entries.each do |entry| %>
-    <%= render entry %>
-    <p>
-      <%= link_to "Show this entry", entry %>
-    </p>
+    <div class="rounded shadow w-full p-2 m-1">
+      <div class="flex w-full justify-between">
+        <div class="opacity-75"><%= entry.created_at.strftime("%B %d, %Y") %></div>
+        <p>
+          <%= link_to "Show this entry", entry %>
+        </p>
+      </div>
+      <div class="text-xs p-1">
+        <% if entry.summary.present? %>
+          <%= entry.summary %>
+        <% else %>
+          No entry today...
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>
-
-<%= link_to "New entry", new_entry_path %>

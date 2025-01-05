@@ -13,7 +13,7 @@
         <% end %>
       </div>
       <div class="flex items-center">
-        <% if current_user.admin? %>
+        <% if policy(Setting.instance).show? %>
           <%= link_to "Settings", setting_path(Setting.instance), class: "rounded-md px-3 py-2 mr-2 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-gray-200" %>
         <% end %>
         <%= link_to Current.user.email_address, Current.user, class: "rounded-md px-3 py-2 mr-2 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-gray-200" %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_04_194321) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_05_192459) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -53,6 +53,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_04_194321) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.text "summary"
     t.index ["user_id"], name: "index_entries_on_user_id"
   end
 
@@ -70,6 +71,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_04_194321) do
     t.index ["entry_id"], name: "index_insights_on_entry_id"
   end
 
+  create_table "replies", force: :cascade do |t|
+    t.text "reply"
+    t.integer "urgency"
+    t.integer "entry_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entry_id"], name: "index_replies_on_entry_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -84,6 +94,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_04_194321) do
     t.text "image_prompt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "reply_prompt"
+    t.text "summary_prompt"
   end
 
   create_table "users", force: :cascade do |t|
@@ -100,6 +112,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_04_194321) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "entries", "users"
   add_foreign_key "insights", "entries"
+  add_foreign_key "replies", "entries"
   add_foreign_key "sessions", "users"
 
   # Virtual tables defined in this database.

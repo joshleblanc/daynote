@@ -2,12 +2,11 @@ class Entry < ApplicationRecord
   has_rich_text :content
 
   has_one :entry_embedding
+  has_one :reply
   has_one_attached :image
   has_many :insights
 
   belongs_to :user
-
-  after_save :embed!
 
   def editable?(current_user)
     current? || current_user&.admin?
@@ -49,9 +48,19 @@ class Entry < ApplicationRecord
     InsightGenerationJob.perform_later(self)
   end
 
+  def regenerate_reply!
+    ReplyGenerationJob.perform_later(self)
+  end
+
+  def regenerate_summary!
+    SummaryGenerationJob.perform_later(self)
+  end
+
   def regenerate!
     regenerate_image!
     regenerate_insights!
+    regenerate_reply!
+    regenerate_summary!
   end
 
   def embed!

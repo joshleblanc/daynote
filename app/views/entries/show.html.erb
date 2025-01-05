@@ -5,7 +5,7 @@
   <div class="flex justify-around w-full pb-16 pt-16">
     <%= link_to "Previous entry", @entry.prev_entry, disabled: !@entry.prev_entry?, class: class_names("opacity-50 cursor-not-allowed" => !@entry.prev_entry?) %>
     <h1 class="flex">
-      <%= @entry.created_at %>
+      <%= @entry.created_at.strftime("%B %d, %Y") %>
       <% if @entry.editable?(current_user) %>
         <div class="pl-2 w-7">
           <%= icon "check-circle", class: "text-green-500", stroke_width: 3, data: { auto_submit_target: "synced" } %>
@@ -15,7 +15,7 @@
     </h1>
     <%= link_to "Next entry", @entry.next_entry, disabled: !@entry.next_entry?, class: class_names("opacity-50 cursor-not-allowed" => !@entry.next_entry?) %>
   </div>
-  <% if false && @entry.editable?(current_user) %>
+  <% if @entry.editable?(current_user) %>
     <%= render "form", entry: @entry %>
   <% else %>
     <%= render @entry %>
