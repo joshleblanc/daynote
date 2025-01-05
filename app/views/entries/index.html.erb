@@ -12,6 +12,8 @@
       <div class="text-xs p-1">
         <% if entry.summary.present? %>
           <%= entry.summary %>
+        <% elsif entry.content.present? %>
+          <%= entry.content.to_plain_text.truncate(100) %>
         <% else %>
           No entry today...
         <% end %>
