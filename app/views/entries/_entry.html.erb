@@ -1,3 +1,7 @@
 <div id="<%= dom_id entry %>">
-  <%= entry.content %>
+  <% %>
+  <% entry.content.body&.deconstruct&.each do |part| %>
+    <% find_insights(entry, part) %>
+    <%= part.to_s.html_safe %>
+  <% end %>
 </div>

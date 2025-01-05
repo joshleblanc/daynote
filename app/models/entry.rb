@@ -2,10 +2,12 @@ class Entry < ApplicationRecord
   has_rich_text :content
 
   has_one :entry_embedding
+  has_one_attached :image
+  has_many :insights
 
   belongs_to :user
 
-  # after_save :embed!
+  after_save :embed!
 
   def editable?(current_user)
     current? || current_user&.admin?
@@ -37,6 +39,19 @@ class Entry < ApplicationRecord
     where(
       id: query.pluck(:entry_id),
     )
+  end
+
+  def regenerate_image!
+    ImageGenerationJob.perform_later(self)
+  end
+
+  def regenerate_insights!
+    InsightGenerationJob.perform_later(self)
+  end
+
+  def regenerate!
+    regenerate_image!
+    regenerate_insights!
   end
 
   def embed!

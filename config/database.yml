@@ -10,7 +10,6 @@ default: &default
   timeout: 5000
   extensions:
     - <%= SqliteVec.loadable_path %>
-    - <%= Rails.root.join("lembed0.so") %>
 development:
   <<: *default
   database: storage/development.sqlite3

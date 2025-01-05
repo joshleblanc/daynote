@@ -4,6 +4,8 @@ class EntriesController < ApplicationController
   # GET /entries or /entries.json
   def index
     if params.include? :q
+      embedding = Embedding.create(params[:q])
+      @entries = policy_scope(Entry.vector_search(embedding: embedding.embedding)).order(created_at: :desc)
     else
       date = Time.now
       entry = policy_scope(Entry.where(created_at: date.beginning_of_day..date.end_of_day)).first_or_create

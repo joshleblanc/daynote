@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :settings, except: [:index]
   resource :session
   resources :passwords, param: :token
   resources :entries
