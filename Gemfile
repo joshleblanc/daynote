@@ -72,7 +72,7 @@ gem "ruby-openai", "~> 7.3"
 
 gem "langchainrb_rails", "~> 0.1.12"
 
-gem "neighbor", "~> 0.5.1"
+gem "neighbor", "~> 0.5.2"
 
 gem "pundit", "~> 2.4"
 

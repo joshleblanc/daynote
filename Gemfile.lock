@@ -190,7 +190,7 @@ GEM
     minitest (5.25.4)
     msgpack (1.7.5)
     multipart-post (2.4.1)
-    neighbor (0.5.1)
+    neighbor (0.5.2)
       activerecord (>= 7)
     net-http (0.6.0)
       uri
@@ -403,7 +403,7 @@ DEPENDENCIES
   jbuilder
   kamal
   langchainrb_rails (~> 0.1.12)
-  neighbor (~> 0.5.1)
+  neighbor (~> 0.5.2)
   propshaft
   puma (>= 5.0)
   pundit (~> 2.4)
