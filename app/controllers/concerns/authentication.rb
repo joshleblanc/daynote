@@ -1,6 +1,5 @@
 module Authentication
   extend ActiveSupport::Concern
-  include Pundit::Authorization
 
   included do
     before_action :require_authentication
@@ -61,6 +60,5 @@ module Authentication
   def terminate_session
     Current.session.destroy
     cookies.delete(:session_id)
-    pundit_reset!
   end
 end
