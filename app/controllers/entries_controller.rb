@@ -27,7 +27,7 @@ class EntriesController < ApplicationController
     respond_to do |format|
       if @entry.update(entry_params)
         @entry.embed!
-        format.html { redirect_to @entry, notice: "Entry was successfully updated." }
+        format.html { redirect_to @entry }
         format.json { render :show, status: :ok, location: @entry }
       else
         format.html { render :edit, status: :unprocessable_entity }
