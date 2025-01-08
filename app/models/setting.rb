@@ -2,6 +2,7 @@ class Setting < ApplicationRecord
   def self.instance
     first_or_create(
       image_prompt: "Generate an accompanying image for this diary entry",
+      query_prompt: "A user is providing a search query for their diary entries. Using the provided context, generate a result for their query. Context: ",
       insight_prompt: %Q(
           You are an AI assistant that helps analyze diary entries. Your task is to identify unique sections within each diary entry and provide meaningful insights, encouraging words, or suggestions based on each section.
 

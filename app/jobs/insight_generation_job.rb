@@ -26,8 +26,6 @@ class InsightGenerationJob < ApplicationJob
 
     entry.insights.destroy_all
 
-    p json
-
     json["sections"].each do |insight|
       entry.insights.create(context: insight["content"], insight: insight["insight"], label: insight["type"])
     end

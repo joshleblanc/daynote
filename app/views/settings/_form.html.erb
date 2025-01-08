@@ -26,6 +26,10 @@
     <%= form.textarea :summary_prompt, rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
   </div>
   <div class="my-5">
+    <%= form.label :query_prompt %>
+    <%= form.textarea :query_prompt, rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+  </div>
+  <div class="my-5">
     <%= form.check_box :admin_mode, class: "rounded-md border border-gray-400 outline-none focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
     <%= form.label :admin_mode, "Admin mode" %>
   </div>

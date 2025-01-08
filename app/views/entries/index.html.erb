@@ -1,23 +1,58 @@
 <p style="color: green"><%= notice %></p>
 <% content_for :title, "Entries" %>
-<div id="entries" class="flex w-full flex-col">
-  <% @entries.each do |entry| %>
-    <div class="rounded shadow w-full p-2 m-1">
-      <div class="flex w-full justify-between">
-        <div class="opacity-75"><%= entry.created_at.strftime("%B %d, %Y") %></div>
-        <p>
-          <%= link_to "Show this entry", entry %>
-        </p>
-      </div>
-      <div class="text-xs p-1">
-        <% if entry.summary.present? %>
-          <%= entry.summary %>
-        <% elsif entry.content.present? %>
-          <%= entry.content.to_plain_text.truncate(100) %>
-        <% else %>
-          No entry today...
-        <% end %>
-      </div>
+<% if params[:q].present? %>
+  <h2 class="text-xl font-semibold mb-4">Search results for: <%= params[:q] %></h2>
+<% end %>
+<% if @result.present? %>
+  <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4 rounded shadow-md w-full">
+    <div class="flex items-center mb-2">
+      <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+      </svg>
+      <h3 class="font-bold text-lg">AI-Generated Result</h3>
     </div>
-  <% end %>
-</div>
+    <p class="whitespace-pre-line"><%= @result["result"] %></p>
+    <% if @result["sources"].present? %>
+      <div class="mt-4">
+        <h4 class="font-semibold text-sm mb-2">Sources:</h4>
+        <ul class="list-disc list-inside text-sm text-gray-600">
+          <% @result["sources"].each do |entry_id| %>
+            <li><%= link_to "Entry #{entry_id}", entry_path(entry_id), class: "hover:underline" %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<% if @entries.present? && params[:q].present? %>
+  <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+    <div class="flex items-center mb-3">
+      <svg class="w-6 h-6 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      <h3 class="font-bold text-lg text-gray-700">Context Entries</h3>
+    </div>
+    <p class="text-sm text-gray-600 mb-4">The following entries were used as context to generate the AI response:</p>
+    <div class="space-y-3">
+      <% @entries.each do |entry| %>
+        <div class="bg-white rounded shadow p-4">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-semibold text-gray-800"><%= entry.created_at.strftime("%B %d, %Y") %></h4>
+              <div class="mt-2 text-gray-600 line-clamp-3"><%= entry.content %></div>
+            </div>
+            <%= link_to "View", entry_path(entry), class: "ml-4 text-blue-600 hover:text-blue-800 hover:underline" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% elsif !params[:q].present? %>
+  <div id="entries" class="flex w-full flex-col">
+    <% @entries.each do |entry| %>
+      <div class="rounded shadow w-full p-2 m-1">
+        <%= render entry %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

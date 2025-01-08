@@ -5,10 +5,11 @@ class EntriesController < ApplicationController
   def index
     if params.include? :q
       embedding = Embedding.create(params[:q])
-      @entries = policy_scope(Entry).vector_search(embedding: embedding.embedding).order(created_at: :desc)
+      @entries = policy_scope(Entry).with_rich_text_content.vector_search(embedding: embedding.embedding, limit: nil).order(created_at: :desc)
+      @result = QueryGenerationJob.perform_now(params[:q], @entries)
     else
       date = Time.now
-      entry = policy_scope(Entry).where(created_at: date.beginning_of_day..date.end_of_day).first_or_create
+      entry = policy_scope(Entry).with_rich_text_content.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create
       redirect_to entry
     end
   end

@@ -34,7 +34,7 @@ class Entry < ApplicationRecord
   end
 
   def self.vector_search(embedding:, limit: 10)
-    query = EntryEmbedding.nearest_neighbors(:embedding, embedding, distance: :euclidean).limit(limit)
+    query = EntryEmbedding.joins(entry: [:rich_text_content]).where("action_text_rich_texts.body IS NOT NULL").nearest_neighbors(:embedding, embedding, distance: :euclidean).limit(limit)
     where(
       id: query.pluck(:entry_id),
     )

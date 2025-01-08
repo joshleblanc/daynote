@@ -32,6 +32,6 @@ class SettingsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def setting_params
-    params.expect(setting: [:admin_mode, :insight_prompt, :image_prompt, :reply_prompt, :summary_prompt])
+    params.expect(setting: [:admin_mode, :insight_prompt, :image_prompt, :reply_prompt, :summary_prompt, :query_prompt])
   end
 end
