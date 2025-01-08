@@ -6,7 +6,9 @@ class EntriesController < ApplicationController
     if params.include? :q
       embedding = Embedding.create(params[:q])
       @entries = policy_scope(Entry).with_rich_text_content.vector_search(embedding: embedding.embedding, limit: nil).order(created_at: :desc)
-      @result = QueryGenerationJob.perform_now(params[:q], @entries)
+      @result = Rails.cache.fetch("query-#{params[:q]}-#{@entries.cache_key_with_version}") do
+        QueryGenerationJob.perform_now(params[:q], @entries)
+      end
     else
       date = Time.now
       entry = policy_scope(Entry).with_rich_text_content.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create
