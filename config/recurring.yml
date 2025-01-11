@@ -9,8 +9,8 @@
 #     priority: 2
 #     schedule: at 5am every day
 
-production:
-  daily_generations:
-    class: ProcessEntriesJob
-    queue: background
-    schedule: every day
+# production:
+#   daily_generations:
+#     class: ProcessEntriesJob
+#     queue: background
+#     schedule: every day

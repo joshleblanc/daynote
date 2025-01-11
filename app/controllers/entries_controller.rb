@@ -11,7 +11,11 @@ class EntriesController < ApplicationController
       end
     else
       date = Time.current
-      entry = policy_scope(Entry).with_rich_text_content.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create
+
+      entry = policy_scope(Entry).with_rich_text_content.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create do
+        ProcessEntriesJob.perform_later(_1.past_entries.last)
+      end
+
       redirect_to entry
     end
   end

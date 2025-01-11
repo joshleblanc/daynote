@@ -19,12 +19,20 @@ class Entry < ApplicationRecord
     end
   end
 
+  def future_entries
+    Entry.where(created_at: created_at.., user: user).order(:created_at)
+  end
+
+  def past_entries
+    Entry.where(created_at: ..created_at, user: user).order(:created_at)
+  end
+
   def next_entry
-    Entry.where(created_at: created_at.., user: user).order(:created_at).second
+    future_entries.second
   end
 
   def prev_entry
-    Entry.where(created_at: ..created_at, user: user).order(:created_at).second_to_last
+    past_entries.second_to_last
   end
 
   def prev_entry?
