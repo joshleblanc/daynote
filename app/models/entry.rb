@@ -13,8 +13,10 @@ class Entry < ApplicationRecord
   end
 
   def current?
-    today = Time.now
-    (today.beginning_of_day..today.end_of_day).cover?(created_at)
+    Time.use_zone(user.timezone) do
+      today = Time.current
+      (today.beginning_of_day..today.end_of_day).cover?(created_at)
+    end
   end
 
   def next_entry

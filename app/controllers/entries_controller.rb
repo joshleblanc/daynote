@@ -10,7 +10,7 @@ class EntriesController < ApplicationController
         QueryGenerationJob.perform_now(params[:q], @entries)
       end
     else
-      date = Time.now
+      date = Time.current
       entry = policy_scope(Entry).with_rich_text_content.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create
       redirect_to entry
     end
