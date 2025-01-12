@@ -1,4 +1,6 @@
 class Entry < ApplicationRecord
+  broadcasts_refreshes
+
   has_rich_text :content
 
   has_one :entry_embedding
