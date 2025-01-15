@@ -76,7 +76,7 @@ gem "neighbor", "~> 0.5.1"
 
 gem "pundit", "~> 2.4"
 
-gem "rails_icons", "~> 1.0"
+gem "rails_icons", "~> 1.1"
 
 gem "informers", "~> 1.2"
 
