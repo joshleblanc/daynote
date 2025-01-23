@@ -63,7 +63,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "tailwindcss-rails", "~> 3.1"
+gem "tailwindcss-rails", "~> 3.3"
 
 # gem "pg", "~> 1.5"
 gem "sqlite-vec", require: "sqlite_vec"
