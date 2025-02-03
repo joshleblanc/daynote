@@ -138,7 +138,7 @@ GEM
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
-    informers (1.2.0)
+    informers (1.2.1)
       onnxruntime (>= 0.9)
       tokenizers (>= 0.5.3)
     io-console (0.8.0)
