@@ -1,7 +1,10 @@
 <p style="color: green"><%= notice %></p>
 <% content_for :title, "Entries" %>
+<%= turbo_stream_from current_user %>
 <% if params[:q].present? %>
   <h2 class="text-xl font-semibold mb-4">Search results for: <%= params[:q] %></h2>
+<% else %>
+  <%= render "entries/form", entry: Entry.new %>
 <% end %>
 <% if @result.present? %>
   <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4 rounded shadow-md w-full">

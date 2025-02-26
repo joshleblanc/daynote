@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  broadcasts_refreshes
   has_secure_password
   has_many :sessions, dependent: :destroy
 

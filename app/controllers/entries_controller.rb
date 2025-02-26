@@ -10,13 +10,32 @@ class EntriesController < ApplicationController
         QueryGenerationJob.perform_now(params[:q], @entries)
       end
     else
-      date = Time.current
+      @entries = policy_scope(Entry).with_rich_text_content.includes(:replies).order(created_at: :desc)
+      # date = Time.current
 
-      entry = policy_scope(Entry).with_rich_text_content.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create do
-        ProcessEntriesJob.perform_later(_1.past_entries.last)
+      # entry = policy_scope(Entry).with_rich_text_content.where(created_at: date.beginning_of_day..date.end_of_day).first_or_create do
+      #   ProcessEntriesJob.perform_later(_1.past_entries.last)
+      # end
+
+      # redirect_to entry
+    end
+  end
+
+  def create
+    @entry = Entry.new(entry_params)
+    @entry.user = current_user
+    @entry.embed!
+
+    ProcessEntriesJob.perform_later(@entry)
+
+    respond_to do |format|
+      if @entry.save
+        format.html { redirect_to entries_path, notice: "Entry was successfully created." }
+        format.json { render :show, status: :created, location: @entry }
+      else
+        format.html { redirect_to entries_path, status: :unprocessable_entity }
+        format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
-
-      redirect_to entry
     end
   end
 

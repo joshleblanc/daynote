@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :settings, except: [:index, :new, :create, :destroy]
   resource :session
   resources :passwords, param: :token
-  resources :entries, except: [:new, :create]
+  resources :entries, except: [:new]
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

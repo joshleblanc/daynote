@@ -12,4 +12,7 @@
   <div class="field w-full" data-turbo-permanent id="<%= dom_id(entry, "trix-editor") %>">
     <%= form.rich_textarea :content, data: { controller: "trix-state", action: "trix-selection-change->trix-state#selectionChange trix-change->auto-submit#change trix-initialize->auto-submit#init", auto_submit_target: "trix" } %>
   </div>
+  <div class="field p-2">
+    <%= form.submit "Save", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+  </div>
 <% end %>

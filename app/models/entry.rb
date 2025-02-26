@@ -4,14 +4,18 @@ class Entry < ApplicationRecord
   has_rich_text :content
 
   has_one :entry_embedding
-  has_one :reply
+  has_many :replies
   has_one_attached :image
   has_many :insights
 
-  belongs_to :user
+  belongs_to :user, touch: true
 
   def editable?(current_user)
     current? || current_user&.admin?
+  end
+
+  def reply
+    replies.order(:created_at).last
   end
 
   def current?
